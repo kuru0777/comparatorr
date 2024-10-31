@@ -15,7 +15,20 @@ To use the application, simply upload the PDF documents you wish to compare. The
 
 ## Installation
 
-Follow the instructions in the repository to set up the application on your local machine.
+To install the Text Extract Comparator application on your local machine, follow these steps:
+
+1. Download the installer from the following link:
+   [Download Text Extract Comparator](https://github.com/kuru0777/comparatorr/blob/main/installers/comparator.exe)
+
+2. Once the download is complete, locate the downloaded file (`comparator.exe`) on your computer.
+
+3. Double-click the installer to start the installation process.
+
+4. Follow the on-screen instructions to complete the installation.
+
+5. After installation, you can launch the application from your desktop or start menu.
+
+Now you are ready to use the Text Extract Comparator!
 
 ---
 
