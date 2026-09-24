@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:comparatorr/View/compFile.dart';
 import 'package:comparatorr/View/doctotext.dart';
+import 'package:comparatorr/View/reconciliation_page.dart';
 import 'package:comparatorr/ViewModel/menubaritems.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
@@ -56,7 +57,8 @@ class _MainAppState extends State<MainApp> {
                   key: const ValueKey('compfile'),
                   title: '',
                 )),
-        GetPage(name: '/doctotext', page: () => const DocToText())
+        GetPage(name: '/doctotext', page: () => const DocToText()),
+        GetPage(name: '/reconcile', page: () => const ReconciliationPage()),
       ],
       theme: ThemeData(
         brightness: Brightness.light,
@@ -135,6 +137,16 @@ class _MainAppState extends State<MainApp> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              Padding(
+                padding: const EdgeInsets.only(bottom: 24),
+                child: ElevatedButton.icon(
+                  style: butonstyle,
+                  onPressed: () => Get.toNamed('/reconcile'),
+                  icon: const Icon(Icons.compare_arrows, color: Colors.white),
+                  label: Text('Mutabakat Yap (iki ekstreyi eşleştir)',
+                      style: textstyle),
+                ),
+              ),
               Obx(() => Center(
                   child: /*visible.value ? */
                       Text(visible.value ? '' : 'Dosya seçilmedi.'))),

@@ -33,7 +33,8 @@ class StatementTemplate {
   final String name;
 
   /// Yakalama grupları isimli olmalı: date, docNo, description, debit,
-  /// credit, balance. Zorunlu olanlar: date ve en az biri debit/credit.
+  /// credit, balance; ya da borç/alacak yerine amount + direction (B/A).
+  /// Zorunlu olanlar: date ve en az biri debit/credit (veya amount).
   final RegExp linePattern;
 
   /// Bu ifadelerden biriyle eşleşen satırlar atlanır (başlık, sayfa altı,
@@ -102,8 +103,18 @@ class TemplateStatementParser implements StatementParser {
         }
 
         final date = dateParser.parse(m.namedGroup('date') ?? '');
-        final debit = _amount(m.namedGroup('debit'));
-        final credit = _amount(m.namedGroup('credit'));
+        int? debit;
+        int? credit;
+        if (m.groupNames.contains('amount')) {
+          // Tek tutar sütunu + yön harfi (B: borç, A: alacak).
+          final amount = _amount(m.namedGroup('amount'));
+          final dir = (m.namedGroup('direction') ?? '').toUpperCase();
+          if (amount != null && dir == 'B') debit = amount;
+          if (amount != null && dir == 'A') credit = amount;
+        } else {
+          debit = _amount(m.namedGroup('debit'));
+          credit = _amount(m.namedGroup('credit'));
+        }
         if (date == null || (debit == null && credit == null)) continue;
 
         final balanceRaw = m.groupNames.contains('balance')
@@ -114,7 +125,8 @@ class TemplateStatementParser implements StatementParser {
           side: side,
           index: entries.length,
           date: date,
-          documentNo: m.namedGroup('docNo'),
+          documentNo:
+              m.groupNames.contains('docNo') ? m.namedGroup('docNo') : null,
           description: (m.namedGroup('description') ?? '').trim(),
           debit: debit ?? 0,
           credit: credit ?? 0,
